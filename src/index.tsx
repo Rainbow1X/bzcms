@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import "./static/css/font-awesome.min.css"
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import zhCN from 'antd/lib/locale/zh_CN';
+import {ConfigProvider} from "antd"
 ReactDOM.render(
-  <React.StrictMode>
+  <ConfigProvider locale={zhCN}>
     <App />
-  </React.StrictMode>,
+  </ConfigProvider>,
   document.getElementById('root')
 );
 

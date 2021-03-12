@@ -9,9 +9,9 @@ function App() {
        {
         routers.map(item=>{
           if (item.exac){
-            return <Route path={item.ptah} component={item.component} exact key={item.ptah}></Route>
+            return <Route path={item.path} component={item.component} key={item.path}></Route>
           }else{
-            return <Route path={item.ptah} component={item.component} key={item.ptah}></Route>
+            return <Route path={item.path} component={item.component} key={item.path}></Route>
           }
         })
       }

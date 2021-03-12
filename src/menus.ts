@@ -10,11 +10,11 @@ const menus = [
     children: [
       {
         title: "用户列表",
-        path: "/user",
+        path: "/home/memberList",
       },
       {
         title: "管理列表",
-        path: "/user",
+        path: "/home/adminList",
       },
     ],
   },
@@ -24,11 +24,11 @@ const menus = [
     children: [
       {
         title: "分类管理",
-        path: "/user",
+        path: "/home/cate",
       },
       {
         title: "资源列表",
-        path: "/user",
+        path: "/dataList",
       },
     ],
   },
@@ -38,11 +38,11 @@ const menus = [
     children: [
       {
         title: "菜单设置",
-        path: "/user",
+        path: "/menu",
       },
       {
         title: "轮播图设置",
-        path: "/user",
+        path: "/banner",
       },
     ],
   },
