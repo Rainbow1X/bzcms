@@ -8,11 +8,7 @@ function App() {
      <Switch>
        {
         routers.map(item=>{
-          if (item.exac){
-            return <Route path={item.path} component={item.component} key={item.path}></Route>
-          }else{
-            return <Route path={item.path} component={item.component} key={item.path}></Route>
-          }
+            return <Route path={item.path} component={item.component} key={item.path} exact={item.exac}></Route>
         })
       }
      </Switch>

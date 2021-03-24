@@ -4,11 +4,13 @@ import MemberList from "./pages/userMange/memberList";
 import AdminList from "./pages/userMange/adminList";
 import CateMange from "./pages/dataMange/cateMange";
 import DataList from "./pages/dataMange/dataList";
+import MenusList from "./pages/setting/menus";
+import BannerList from "./pages/setting/banner";
 const routers = [
   {
     path: "/home",
     component: Home,
-    exac: true,
+    exac: false,
     children: [
       {
         path: "/home/memberList",
@@ -23,12 +25,16 @@ const routers = [
         component: CateMange,
       },
       {
-        path: "/home/cate",
-        component: CateMange,
-      },
-      {
         path: "/home/dataList",
         component: DataList,
+      },
+      {
+        path: "/home/menusList",
+        component: MenusList,
+      },
+      {
+        path: "/home/banner",
+        component: BannerList,
       },
     ],
   },

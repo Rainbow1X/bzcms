@@ -1,0 +1,12 @@
+.dataListBody {
+  display: flex;
+  .leftCateBox {
+    width: 200px;
+    height: 100%;
+    border-right: solid #f0f0f0 1px;
+  }
+  .rightTable {
+    padding-left: 10px;
+    flex: 1;
+  }
+}

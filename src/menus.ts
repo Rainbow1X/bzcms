@@ -28,7 +28,7 @@ const menus = [
       },
       {
         title: "资源列表",
-        path: "/dataList",
+        path: "/home/dataList",
       },
     ],
   },
@@ -38,11 +38,11 @@ const menus = [
     children: [
       {
         title: "菜单设置",
-        path: "/menu",
+        path: "/home/menusList",
       },
       {
         title: "轮播图设置",
-        path: "/banner",
+        path: "/home/banner",
       },
     ],
   },

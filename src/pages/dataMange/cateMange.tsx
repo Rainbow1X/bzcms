@@ -18,7 +18,7 @@ const columns = [
     align:center,
   },
   {
-    title: '分类图标',
+    title: '封面',
     dataIndex: 'icon',
     key: 'ico',
     align:center,
@@ -45,6 +45,9 @@ const columns = [
             <span onClick={
                 () => {}
             } > 修改 </span>
+            <span onClick={
+                () => {}
+            } > 设置为专辑 </span>
             <Popconfirm title="你确定要删除该分组吗？"
                 okText="确定"
                 cancelText="取消"
@@ -63,65 +66,63 @@ const columns = [
 const data = [
   {
     id: 1,
-    title: 'John Brown sr.',
-    icon: 'New York No. 1 Lake Park',
+    title: '表情',
+    icon: '表情',
     state:1,
     children: [
       {
         id: 11,
-        title: 'John Brown',
+        title: 'QQ表情',
         state: 1,
-        icon: 'New York No. 2 Lake Park',
+        icon: 'QQ表情',
       },
       {
         id: 12,
-        title: 'John Brown jr.',
+        title: '微信表情',
         state: 0,
-        icon: 'New York No. 3 Lake Park',
-        children: [
-          {
-            id: 121,
-            title: 'Jimmy Brown',
-            state: 1,
-            icon: 'New York No. 3 Lake Park',
-          },
-        ],
-      },
-      {
-        id: 13,
-        title: 'Jim Green sr.',
-        state: 0,
-        icon: 'London No. 1 Lake Park',
-        children: [
-          {
-            id: 131,
-           title: 'Jim Green',
-            state: 0,
-            icon: 'London No. 2 Lake Park',
-            children: [
-              {
-                id: 1311,
-               title: 'Jim Green jr.',
-                state: 1,
-               icon: 'London No. 3 Lake Park',
-              },
-              {
-                id: 1312,
-               title: 'Jimmy Green sr.',
-                state: 0,
-                icon: 'London No. 4 Lake Park',
-              },
-            ],
-          },
-        ],
-      },
+        icon: '微信表情'
+      }
     ],
   },
   {
     id: 2,
-    title: 'Joe Black',
+    title: '壁纸',
     state: 1,
-    icon: 'Sidney No. 1 Lake Park',
+    icon: '壁纸',
+    children: [
+      {
+        id: 11,
+        title: '动物',
+        state: 1,
+        icon: '动物',
+      },
+      {
+        id: 12,
+        title: '明星',
+        state: 0,
+        icon: '明显'
+      }
+    ],
+  },
+  {
+    id: 2,
+    title: '专辑',
+    state: 1,
+    icon: '专辑',
+    children: [
+      {
+        id: 11,
+        title: '动画专辑',
+        state: 1,
+        icon: '动画专辑',
+      },
+      {
+        id: 12,
+        title: '游戏专辑',
+        state: 0,
+        icon: '游戏专辑'
+      }
+    ],
   },
 ];
 

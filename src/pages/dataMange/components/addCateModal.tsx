@@ -46,18 +46,6 @@ const AddCateModal:React.FC<propsType>=(props)=>{
           <Form.Item name='username' label="状态" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-    
-          <Form.Item 
-          name='icon' 
-          label="分类图标"
-          >
-           <Upload name="logo" action="/upload.do" listType="picture">
-              <div>
-                {/* <img src="" alt="" srcset=""/> */}
-                <Avatar size={64} icon={<UserOutlined />} />
-              </div>
-          </Upload>
-          </Form.Item>
 
           <Form.Item 
           name='cover' 
