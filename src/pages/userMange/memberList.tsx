@@ -37,17 +37,13 @@ const columns = [
     render:(text:string, record:any)=>{
       return(
         <div className="actionWrapper">
-            <span onClick={() => {}}> 拉黑 </span>
-            <span onClick={
-                () => {}
-            } > 修改 </span>
             <Popconfirm title="你确定要删除该管理吗？"
                 okText="确定"
                 cancelText="取消"
                 onConfirm={
                     () => {}
                 }>
-                <span> 删除 </span>
+                <span> 拉黑 </span>
             </Popconfirm >
         </div>
       )
