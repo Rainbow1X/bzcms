@@ -19,6 +19,11 @@ const columns = [
     key: 'username',
   },
   {
+    title: '状态',
+    dataIndex: 'state',
+    key: 'state',
+  },
+  {
     title: '注册时间',
     dataIndex: 'reg_time',
     key: 'reg_time',
@@ -56,6 +61,7 @@ const data = [
     id: 1,
     avatar:'头像',
     username: 'John',
+    state:1,
     reg_time: '2021-3-12 14:46',
     login_time: '2021-3-12 14:46'
   },

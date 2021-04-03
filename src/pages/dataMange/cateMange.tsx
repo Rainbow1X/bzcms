@@ -1,9 +1,11 @@
-import { Table,Popconfirm, Switch, Button} from 'antd';
+import { Table,Popconfirm, Switch, Button,Tabs} from 'antd';
 import PageTitle from "../../components/pageTitle"
 import {AlignType} from 'rc-table/lib/interface'
 import AddCateModal from "./components/addCateModal"
 import {useState} from "react"
+import "./style.scss"
 let center:AlignType ="center"
+const { TabPane } = Tabs;
 const columns = [
   {
     title: 'ID',
@@ -19,10 +21,23 @@ const columns = [
   },
   {
     title: '封面',
-    dataIndex: 'icon',
-    key: 'ico',
+    dataIndex: 'cover',
+    key: 'cover',
     align:center,
   },
+  {
+    title: '是否为专辑',
+    dataIndex: 'album',
+    key: 'album',
+    align:center,
+  },
+  {
+    title: '承载页面',
+    dataIndex: 'page',
+    key: 'page',
+    align:center,
+  },
+
   {
     title: '状态',
     dataIndex: 'state',
@@ -31,8 +46,8 @@ const columns = [
     render:(state:Number)=>{
       return <Switch checked={Boolean(state)}/>
     }
-    
   },
+
   {
     title: '操作',
     dataIndex: 'action',
@@ -67,64 +82,24 @@ const data = [
   {
     id: 1,
     title: '表情',
-    icon: '表情',
+    cover: '表情',
     state:1,
-    children: [
-      {
-        id: 11,
-        title: 'QQ表情',
-        state: 1,
-        icon: 'QQ表情',
-      },
-      {
-        id: 12,
-        title: '微信表情',
-        state: 0,
-        icon: '微信表情'
-      }
-    ],
   },
   {
-    id: 2,
-    title: '壁纸',
+    id: 11,
+    title: 'QQ表情',
     state: 1,
-    icon: '壁纸',
-    children: [
-      {
-        id: 11,
-        title: '动物',
-        state: 1,
-        icon: '动物',
-      },
-      {
-        id: 12,
-        title: '明星',
-        state: 0,
-        icon: '明显'
-      }
-    ],
+    cover: 'QQ表情',
   },
   {
-    id: 2,
-    title: '专辑',
-    state: 1,
-    icon: '专辑',
-    children: [
-      {
-        id: 11,
-        title: '动画专辑',
-        state: 1,
-        icon: '动画专辑',
-      },
-      {
-        id: 12,
-        title: '游戏专辑',
-        state: 0,
-        icon: '游戏专辑'
-      }
-    ],
-  },
+    id: 12,
+    title: '微信表情',
+    state: 0,
+    cover: '微信表情'
+  }
 ];
+
+const tabs = ["头像","表情","壁纸","专辑壁纸","聊天背景"]
 
 
 function CateMange() {
@@ -139,9 +114,17 @@ function CateMange() {
   return (
     <div className="pageContent">
         <PageTitle title="资源分类管理"/>
+
         <div className="pageMain">
+          <div className="addBtn"><Button type="primary" onClick={toggleModal} >添加分类</Button></div>
+          <div>
+            <Tabs defaultActiveKey="1">
+              {tabs.map((item,index) => (
+                <TabPane tab={item} key={index} ></TabPane>
+              ))}
+            </Tabs>
+          </div>
           <Table
-            title={()=><Button type="primary" onClick={toggleModal} >添加分类</Button>}
             rowKey={(record)=>record.id}
             columns={columns}
             dataSource={data}

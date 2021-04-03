@@ -6,6 +6,7 @@ import CateMange from "./pages/dataMange/cateMange";
 import DataList from "./pages/dataMange/dataList";
 import MenusList from "./pages/setting/menus";
 import BannerList from "./pages/setting/banner";
+import SectorMange from './pages/dataMange/sectorMange';
 const routers = [
   {
     path: "/home",
@@ -35,6 +36,10 @@ const routers = [
       {
         path: "/home/banner",
         component: BannerList,
+      },
+      {
+        path: "/home/sector",
+        component: SectorMange,
       },
     ],
   },

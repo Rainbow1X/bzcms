@@ -23,6 +23,10 @@ const menus = [
     icon: "fa-user-o",
     children: [
       {
+        title: "板块分类",
+        path: "/home/sector",
+      },
+      {
         title: "分类管理",
         path: "/home/cate",
       },
