@@ -26,19 +26,6 @@ const columns = [
     align:center,
   },
   {
-    title: '是否为专辑',
-    dataIndex: 'album',
-    key: 'album',
-    align:center,
-  },
-  {
-    title: '承载页面',
-    dataIndex: 'page',
-    key: 'page',
-    align:center,
-  },
-
-  {
     title: '状态',
     dataIndex: 'state',
     key: 'state',
