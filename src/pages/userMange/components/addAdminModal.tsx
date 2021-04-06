@@ -1,9 +1,11 @@
-import { Modal,Input,Form,Upload,Avatar} from 'antd';
-import React from "react"
+import { Modal,Input,Form,Upload,Avatar,Spin,message} from 'antd';
+import React,{useState}from "react"
 import {UserOutlined} from '@ant-design/icons';
+import {AdminUserModels} from "../../../models/models"
+import apiurl from '../../../utils/apiUrl';
 interface propsType{
   isShow:boolean|undefined,
-  handelOk:() => void,
+  handelOk:(res: AdminUserModels) => void,
   handleCancel:() => void,
   title:string
 }
@@ -13,32 +15,56 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
-/* eslint-disable no-template-curly-in-string */
-const validateMessages = {
-  required: '${label}必须填写',
-  types: {
-    email: '请输入正确的${label}!',
-  },
-  number: {
-    range: '${label}长度必须大于 ${min} 小于 ${max}',
-  },
+const normFile = (e: any) => {
+  console.log('Upload event:', e);
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e && e.fileList;
 };
-/* eslint-enable no-template-curly-in-string */
+
 
 const AddAdminModal:React.FC<propsType>=(props)=>{
+  const [form] = Form.useForm();
   const {isShow,handelOk,handleCancel,title}=props 
-  const onFinish = (values: any) => {
-    console.log(values);
-  };
+  
+  const [imageUrl,setImageUrl] = useState('')
+
+  const [loading,setLoading] = useState(false)
+
+  const checkData=async ()=>{
+      const values = await form.validateFields();
+      values.avatar = imageUrl
+      handelOk(values)
+  }
+
+
+
+  const handleUploadImg = (res:any)=>{
+     let params = res.file
+    if (params.status === 'uploading') {
+      setLoading(true)
+      return;
+    }
+    if (params.status === 'done') {
+      setLoading(false)
+     message.success(params.response.msg)
+     setImageUrl(params.response.data)
+    }
+  }
+
   return(
-    <Modal title={title} okText="添加" cancelText="取消" visible={isShow} onOk={handelOk} onCancel={handleCancel}>
+    <Modal title={title} okText="添加" cancelText="取消" visible={isShow} onOk={checkData} onCancel={handleCancel}>
       
-        <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+        <Form {...layout} name="nest-messages" form={form}  >
           <Form.Item name='username' label="用户名" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item name='password' label="密码" rules={[{ min:6,max:16,required: true}]}>
             <Input.Password />
+          </Form.Item>
+          <Form.Item name='nickname' label="名称" rules={[{required: true,min:2,max:16,}]}>
+            <Input />
           </Form.Item>
           <Form.Item name='email' label="邮箱" rules={[{ type: 'email'}]}>
             <Input />
@@ -47,11 +73,16 @@ const AddAdminModal:React.FC<propsType>=(props)=>{
           name='avatar' 
           label="头像"
           valuePropName="fileList"
+          getValueFromEvent={normFile}
           >
-           <Upload name="logo" action="/upload.do" listType="picture">
+           <Upload name="img" onChange={handleUploadImg} action={apiurl.apiUrl+apiurl.uploadApi} showUploadList={false}>
               <div>
-                {/* <img src="" alt="" srcset=""/> */}
-                <Avatar size={64} icon={<UserOutlined />} />
+                
+                {
+                  loading ? <Avatar size={64} icon={<Spin />}/>:imageUrl?<Avatar size={64} src={apiurl.imgPath+imageUrl}/> : <Avatar size={64} icon={<UserOutlined />}/> 
+                  
+                }
+                
               </div>
           </Upload>
           </Form.Item>

@@ -1,8 +1,12 @@
-import { Table,Popconfirm,Button} from 'antd';
+import { Table,Popconfirm,Button,Avatar,message} from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import PageTitle from "../../components/pageTitle"
 import {AlignType} from 'rc-table/lib/interface'
-import { useState } from 'react';
+import { useState,useEffect} from 'react';
 import AddAdminModal from "./components/addAdminModal"
+import {getAdminList,addAdmin} from "../../utils/function"
+import {AdminUserModels} from "../../models/models"
+import apiUrl from "../../utils/apiUrl"
 import "./style.scss"
 let center:AlignType ="center"
 const columns = [
@@ -15,6 +19,18 @@ const columns = [
     title: '头像',
     dataIndex: 'avatar',
     key: 'avatar',
+    render:(text:string)=>{
+      if(text){
+        return <Avatar src={apiUrl.imgPath+text} />
+      }else{
+        <Avatar icon={<UserOutlined />} />
+      } 
+    }
+  },
+  {
+    title: '名称',
+    dataIndex: 'nickname',
+    key: 'nickname',
   },
   {
     title: '用户名',
@@ -62,25 +78,34 @@ const columns = [
   }
 ];
 
-const data = [
-  {
-    id: 1,
-    avatar:'头像',
-    username: 'John',
-    email:'87624931@qq.com',
-    reg_time: '2021-3-12 14:46',
-    login_time: '2021-3-12 14:46'
-  },
- 
-];
+
 
 function AdminList(){
   const [openAddModal,setOpenAddModal] = useState(false)
+  const [adminList,setAdminList] = useState([])
+
+
+
   const toggleModal=()=>{
     setOpenAddModal(!openAddModal)
   }
-  const handelOk=()=>{
 
+  useEffect(()=>{
+    // 需要在 componentDidMount 执行的内容
+    getAdminList((res:any):void=>{
+      console.log(res)
+      setAdminList(res.data)
+    })
+  }, [])
+
+
+  const handelOk=(data:AdminUserModels):void=>{
+    addAdmin(data,(res:any)=>{
+      message.success(res.msg)
+      toggleModal()
+      
+    })
+    
   }
 
 
@@ -97,7 +122,7 @@ function AdminList(){
               }
             }
             columns={columns} 
-            dataSource={data} 
+            dataSource={adminList} 
            />
         </div>
 
@@ -106,3 +131,4 @@ function AdminList(){
     );
 }
 export default AdminList
+
