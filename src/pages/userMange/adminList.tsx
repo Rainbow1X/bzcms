@@ -4,12 +4,20 @@ import PageTitle from "../../components/pageTitle"
 import {AlignType} from 'rc-table/lib/interface'
 import { useState,useEffect} from 'react';
 import AddAdminModal from "./components/addAdminModal"
-import {getAdminList,addAdmin} from "../../utils/function"
+import {getAdminListApi,addAdminApi,deleteAdminApi} from "../../utils/function"
 import {AdminUserModels} from "../../models/models"
 import apiUrl from "../../utils/apiUrl"
 import "./style.scss"
 let center:AlignType ="center"
-const columns = [
+
+
+
+
+function AdminList(){
+  const [openAddModal,setOpenAddModal] = useState(false)
+  const [adminList,setAdminList] = useState([])
+
+  const columns = [
   {
     title: 'ID',
     dataIndex: 'id',
@@ -23,7 +31,7 @@ const columns = [
       if(text){
         return <Avatar src={apiUrl.imgPath+text} />
       }else{
-        <Avatar icon={<UserOutlined />} />
+        return <Avatar icon={<UserOutlined />} />
       } 
     }
   },
@@ -58,18 +66,21 @@ const columns = [
     key: 'action',
     width: 200,
     align:center,
-    render:(text:string, record:any)=>{
+    render:(text:string, record:any,index:number)=>{
       return(
         <div className="actionWrapper">
             <span onClick={
-                () => {}
+                () => {changeAdmin(index)}
             } > 修改 </span>
             <Popconfirm title="你确定要删除该分组吗？"
                 okText="确定"
                 cancelText="取消"
                 onConfirm={
-                    () => {}
+                    () => {
+                      deleteAdmin(index)
+                    }
                 }>
+                
                 <span> 删除 </span>
             </Popconfirm >
         </div>
@@ -78,12 +89,9 @@ const columns = [
   }
 ];
 
-
-
-function AdminList(){
-  const [openAddModal,setOpenAddModal] = useState(false)
-  const [adminList,setAdminList] = useState([])
-
+  const changeAdmin=(index:number):void=>{
+      
+  }
 
 
   const toggleModal=()=>{
@@ -92,20 +100,35 @@ function AdminList(){
 
   useEffect(()=>{
     // 需要在 componentDidMount 执行的内容
-    getAdminList((res:any):void=>{
-      console.log(res)
-      setAdminList(res.data)
-    })
+    getAdminList()
   }, [])
 
 
+  //弹窗 添加管理员的处理
   const handelOk=(data:AdminUserModels):void=>{
-    addAdmin(data,(res:any)=>{
+    addAdminApi(data,(res:any)=>{
       message.success(res.msg)
+      getAdminList()
       toggleModal()
       
     })
-    
+  }
+
+  //获取管理列表
+  const getAdminList=():void=>{
+    getAdminListApi((res:any):void=>{
+      setAdminList(res.data)
+    })
+  }
+
+  //删除指定管理员
+  const deleteAdmin=(index:number):void=>{
+      let newlist = [...adminList]
+    deleteAdminApi(newlist[index]['id'],(res:any)=>{
+      message.success(res.msg)
+      newlist.splice(index,1)
+      setAdminList(newlist)
+    })
   }
 
 
@@ -123,6 +146,7 @@ function AdminList(){
             }
             columns={columns} 
             dataSource={adminList} 
+            pagination={false}
            />
         </div>
 

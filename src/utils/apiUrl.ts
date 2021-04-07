@@ -4,6 +4,7 @@ let apiurl = {
   uploadApi: "uploadImg",
   getAdminList: "user/getAdminList",
   addAdmin: "user/addAdmin",
+  deleteAdmin: "user/deleteAdmin",
 };
 
 export default apiurl;

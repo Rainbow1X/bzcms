@@ -1,5 +1,5 @@
 import { Modal,Input,Form,Upload,Avatar,Spin,message} from 'antd';
-import React,{useState}from "react"
+import React,{useState,useEffect}from "react"
 import {UserOutlined} from '@ant-design/icons';
 import {AdminUserModels} from "../../../models/models"
 import apiurl from '../../../utils/apiUrl';
@@ -16,7 +16,6 @@ const layout = {
 };
 
 const normFile = (e: any) => {
-  console.log('Upload event:', e);
   if (Array.isArray(e)) {
     return e;
   }
@@ -25,9 +24,8 @@ const normFile = (e: any) => {
 
 
 const AddAdminModal:React.FC<propsType>=(props)=>{
-  const [form] = Form.useForm();
   const {isShow,handelOk,handleCancel,title}=props 
-  
+  const [form] = Form.useForm()
   const [imageUrl,setImageUrl] = useState('')
 
   const [loading,setLoading] = useState(false)
@@ -38,7 +36,13 @@ const AddAdminModal:React.FC<propsType>=(props)=>{
       handelOk(values)
   }
 
-
+  useEffect(()=>{
+    if(isShow===false){
+      form.resetFields()
+      setImageUrl('')
+      setLoading(false)
+    }
+  },[isShow,form])
 
   const handleUploadImg = (res:any)=>{
      let params = res.file
@@ -54,7 +58,7 @@ const AddAdminModal:React.FC<propsType>=(props)=>{
   }
 
   return(
-    <Modal title={title} okText="添加" cancelText="取消" visible={isShow} onOk={checkData} onCancel={handleCancel}>
+    <Modal title={title} okText="添加" cancelText="取消" visible={isShow} onOk={checkData} onCancel={handleCancel} forceRender={true}>
       
         <Form {...layout} name="nest-messages" form={form}  >
           <Form.Item name='username' label="用户名" rules={[{ required: true }]}>
@@ -80,7 +84,6 @@ const AddAdminModal:React.FC<propsType>=(props)=>{
                 
                 {
                   loading ? <Avatar size={64} icon={<Spin />}/>:imageUrl?<Avatar size={64} src={apiurl.imgPath+imageUrl}/> : <Avatar size={64} icon={<UserOutlined />}/> 
-                  
                 }
                 
               </div>
