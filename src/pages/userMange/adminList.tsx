@@ -2,10 +2,11 @@ import { Table,Popconfirm,Button,Avatar,message} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import PageTitle from "../../components/pageTitle"
 import {AlignType} from 'rc-table/lib/interface'
-import { useState,useEffect} from 'react';
+import { useState,useEffect,useContext} from 'react';
 import AddAdminModal from "./components/addAdminModal"
-import {getAdminListApi,addAdminApi,deleteAdminApi} from "../../utils/function"
+import {getAdminListApi,addAdminApi,deleteAdminApi,changeAdminApi} from "../../utils/function"
 import {AdminUserModels} from "../../models/models"
+import {AdminProvide,AdminContext} from "../../store/adminContext"
 import apiUrl from "../../utils/apiUrl"
 import "./style.scss"
 let center:AlignType ="center"
@@ -14,9 +15,10 @@ let center:AlignType ="center"
 
 
 function AdminList(){
-  const [openAddModal,setOpenAddModal] = useState(false)
+  const [openAddModal,setOpenAddModal] = useState<boolean>(false)
+  const [actionType,setActionType] = useState<string>('TYPE_NEW') //TYPE_NEW 是新增 TYPE_MODIFY 是修改
   const [adminList,setAdminList] = useState([])
-
+  const {dispatch}= useContext(AdminContext) as {dispatch:Function}
   const columns = [
   {
     title: 'ID',
@@ -89,12 +91,14 @@ function AdminList(){
   }
 ];
 
-  const changeAdmin=(index:number):void=>{
-      
-  }
 
 
   const toggleModal=()=>{
+
+    if (openAddModal===true) {   //当窗口关闭时 清楚reducer当前需要修改数据
+      dispatch({type:"SET_EDIT_ADMIN",payload:{}})
+    }
+
     setOpenAddModal(!openAddModal)
   }
 
@@ -106,12 +110,20 @@ function AdminList(){
 
   //弹窗 添加管理员的处理
   const handelOk=(data:AdminUserModels):void=>{
-    addAdminApi(data,(res:any)=>{
-      message.success(res.msg)
-      getAdminList()
-      toggleModal()
-      
-    })
+    if (actionType==="NEW"){
+      addAdminApi(data,(res:any)=>{
+        message.success(res.msg)
+        getAdminList()
+        toggleModal()
+      })
+    }else{
+      changeAdminApi(data,(res:any)=>{
+        message.success(res.msg)
+        getAdminList()
+        toggleModal()
+      })
+    }
+    
   }
 
   //获取管理列表
@@ -123,7 +135,7 @@ function AdminList(){
 
   //删除指定管理员
   const deleteAdmin=(index:number):void=>{
-      let newlist = [...adminList]
+      let newlist= [...adminList]
     deleteAdminApi(newlist[index]['id'],(res:any)=>{
       message.success(res.msg)
       newlist.splice(index,1)
@@ -131,28 +143,48 @@ function AdminList(){
     })
   }
 
+  const newAdmin=():void=>{
+    setActionType("NEW")
+    toggleModal()
+  }
+
+  
+  //修改admin用户信息
+  const changeAdmin=(index:number):void=>{
+    let curAdmin=adminList[index]
+    dispatch({type:"SET_EDIT_ADMIN",payload:curAdmin})
+    setActionType("TYPE_MODIFY")
+    toggleModal()
+  }
+
 
     return(
       <div className="pageContent">
         <PageTitle title="管理列表"/>
-        <div className="pageMain">
-          
-          <Table
-          rowKey={record=>(record.id)} 
-           title={
-              ()=>{
-                return  <Button type="primary" onClick={()=>{toggleModal()}} >添加新管理</Button>
-              }
-            }
-            columns={columns} 
-            dataSource={adminList} 
-            pagination={false}
-           />
-        </div>
+       
+          <div className="pageMain">
+            <Table
+              rowKey={record=>(record.id)} 
+              title={
+                  ()=>{
+                    return  <Button type="primary" onClick={newAdmin} >添加新管理</Button>
+                  }
+                }
+              columns={columns}
+              dataSource={adminList} 
+              pagination={false}
+            />
+          </div>
 
-        <AddAdminModal isShow={openAddModal} title="添加新管理" handelOk={handelOk}  handleCancel={()=>{toggleModal()}}  />
+          <AddAdminModal type={actionType} isShow={openAddModal} title="添加新管理" handelOk={handelOk}  handleCancel={()=>{toggleModal()}}  />
+
       </div>
     );
 }
-export default AdminList
+const Provide=()=>(
+  <AdminProvide>
+    <AdminList/>
+  </AdminProvide>
+)
+export default Provide
 

@@ -43,3 +43,11 @@ export const addAdminApi = (
 export const deleteAdminApi = (id: number, success: CallableFunction): void => {
   request(apiUrl.deleteAdmin, { id }, success);
 };
+
+//修改管理员的
+export const changeAdminApi = (
+  data: AdminUserModels,
+  success: CallableFunction
+): void => {
+  request(apiUrl.changeAdmin, data, success);
+};

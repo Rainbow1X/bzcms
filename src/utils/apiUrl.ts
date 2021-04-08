@@ -5,6 +5,7 @@ let apiurl = {
   getAdminList: "user/getAdminList",
   addAdmin: "user/addAdmin",
   deleteAdmin: "user/deleteAdmin",
+  changeAdmin: "user/changeAdmin",
 };
 
 export default apiurl;
