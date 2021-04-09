@@ -9,6 +9,7 @@ import {AdminUserModels} from "../../models/models"
 import {AdminProvide,AdminContext} from "../../store/adminContext"
 import apiUrl from "../../utils/apiUrl"
 import "./style.scss"
+import moment from '_moment@2.29.1@moment';
 let center:AlignType ="center"
 
 
@@ -18,7 +19,7 @@ function AdminList(){
   const [openAddModal,setOpenAddModal] = useState<boolean>(false)
   const [actionType,setActionType] = useState<string>('TYPE_NEW') //TYPE_NEW 是新增 TYPE_MODIFY 是修改
   const [adminList,setAdminList] = useState([])
-  const {dispatch}= useContext(AdminContext) as {dispatch:Function}
+  const {state,dispatch}= useContext(AdminContext) as {state:any,dispatch:Function}
   const columns = [
   {
     title: 'ID',
@@ -56,11 +57,20 @@ function AdminList(){
     title: '注册时间',
     dataIndex: 'reg_time',
     key: 'reg_time',
+    render:(text:string)=>{
+      return moment(text).format("YYYY-MM-DD hh:mm:ss")
+    }
   },
   {
     title: '登录时间',
     dataIndex: 'login_time',
     key: 'login_time',
+    render:(text:string)=>{
+      if(text==="0001-01-01T00:00:00Z"){
+        return "未登录"
+      }
+      return moment(text).format("YYYY-MM-DD hh:mm:ss")
+    }
   },
   {
     title: '操作',
@@ -117,6 +127,7 @@ function AdminList(){
         toggleModal()
       })
     }else{
+      data['id'] = state.curAdmin.id
       changeAdminApi(data,(res:any)=>{
         message.success(res.msg)
         getAdminList()

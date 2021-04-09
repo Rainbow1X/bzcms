@@ -75,7 +75,7 @@ const AddAdminModal:React.FC<propsType>=(props)=>{
   
 
   return(
-    <Modal title={title} okText="添加" cancelText="取消" visible={isShow} onOk={checkData} onCancel={handleCancel} forceRender={true}>
+    <Modal title={title} okText={type==="NEW"?"添加":"修改"} cancelText="取消" visible={isShow} onOk={checkData} onCancel={handleCancel} forceRender={true}>
       
         <Form {...layout} name="nest-messages" form={form}  >
           <Form.Item name='username' label="用户名" rules={[{ required: true }]}>

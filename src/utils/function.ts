@@ -13,6 +13,9 @@ function request(
     method: method,
     url: apiUrl.apiUrl + action,
     data: data,
+    headers: {
+      "Content-Type": "application/form-data; charset=utf-8",
+    },
   })
     .then((res) => {
       if (res.data.code === 1) {
@@ -50,4 +53,18 @@ export const changeAdminApi = (
   success: CallableFunction
 ): void => {
   request(apiUrl.changeAdmin, data, success);
+};
+
+//获取会员列表
+export const getMemberListApi = (success: CallableFunction) => {
+  request(apiUrl.getMemberList, {}, success, "GET");
+};
+
+//拉黑和恢复会员
+export const pullBlackMemberApi = (
+  id: number,
+  state: number,
+  success: CallableFunction
+) => {
+  request(apiUrl.pullBlackMember, { id, state }, success);
 };

@@ -6,6 +6,8 @@ let apiurl = {
   addAdmin: "user/addAdmin",
   deleteAdmin: "user/deleteAdmin",
   changeAdmin: "user/changeAdmin",
+  getMemberList: "user/getMemberList",
+  pullBlackMember: "user/pullblackMember",
 };
 
 export default apiurl;
